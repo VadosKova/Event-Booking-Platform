@@ -53,4 +53,23 @@ router.post("/:id/reserve", auth, admin, async (req, res) => {
   }
 });
 
+router.put("/:id", auth, admin, async (req, res) => {
+  try {
+    const event = await Event.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    await client.del("events");
+
+    console.log("Event updated:", event._id);
+
+    res.json(event);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Error updating event");
+  }
+});
+
 module.exports = router;
