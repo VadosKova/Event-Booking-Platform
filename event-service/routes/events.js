@@ -35,21 +35,26 @@ router.post("/", async (req, res) => {
   res.json(event);
 });
 
-router.post("/:id/reserve", auth, admin, async (req, res) => {
+router.post("/:id/reserve", async (req, res) => {
   try {
-    const event = await Event.create({
-      ...req.body,
-      availableSeats: req.body.seats
-    });
+    const event = await Event.findOneAndUpdate(
+      { _id: req.params.id, availableSeats: { $gt: 0 } },
+      { $inc: { availableSeats: -1 } },
+      { new: true }
+    );
+
+    if (!event) {
+      return res.status(400).send("No seats available or event not found");
+    }
 
     await client.del("events");
 
-    console.log("Event created:", event._id);
+    console.log("Seat reserved:", req.params.id);
 
     res.json(event);
   } catch (err) {
     console.error(err);
-    res.status(400).send("Error creating event");
+    res.status(500).send("Reserve error");
   }
 });
 
@@ -84,29 +89,6 @@ router.delete("/:id", auth, admin, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(400).send("Error deleting event");
-  }
-});
-
-router.post("/:id/reserve", async (req, res) => {
-  try {
-    const event = await Event.findOneAndUpdate(
-      { _id: req.params.id, availableSeats: { $gt: 0 } },
-      { $inc: { availableSeats: -1 } },
-      { new: true }
-    );
-
-    if (!event) {
-      return res.status(400).send("No seats available or event not found");
-    }
-
-    await client.del("events");
-
-    console.log("Seat reserved:", req.params.id);
-
-    res.json(event);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Reserve error");
   }
 });
 
