@@ -16,6 +16,8 @@ services:
     build: ./event-service
     ports:
       - "5000:5000"
+    env_file:
+      - .env
 
   booking-service:
     build: ./booking-service
@@ -25,6 +27,8 @@ services:
       - mongo
       - rabbitmq
       - event-service
+    env_file:
+      - .env
 
   notification-service:
     build: ./notification-service
