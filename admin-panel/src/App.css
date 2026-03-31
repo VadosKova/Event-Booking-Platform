@@ -5,6 +5,11 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
 body {
   background: linear-gradient(135deg, #1e1e2f, #2b2b45);
   color: #fff;
