@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
 import Events from "./pages/Events";
 import Users from "./pages/Users";
 import Bookings from "./pages/Bookings";
@@ -15,7 +15,7 @@ export default function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<SignIn />} />
         <Route path="/events" element={<Events />} />
         <Route path="/users" element={<Users />} />
         <Route path="/bookings" element={<Bookings />} />
