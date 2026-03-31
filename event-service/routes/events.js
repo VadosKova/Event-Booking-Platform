@@ -11,4 +11,19 @@ router.post("/", async (req, res) => {
   res.json(event);
 });
 
+router.post("/:id/reserve", async (req, res) => {
+  const event = await Event.findById(req.params.id);
+
+  if (!event) return res.status(404).send("Event not found");
+
+  if (event.availableSeats <= 0) {
+    return res.status(400).send("No seats available");
+  }
+
+  event.availableSeats -= 1;
+  await event.save();
+
+  res.json(event);
+});
+
 module.exports = router;
