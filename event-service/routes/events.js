@@ -35,19 +35,22 @@ router.post("/", async (req, res) => {
   res.json(event);
 });
 
-router.post("/:id/reserve", async (req, res) => {
-  const event = await Event.findById(req.params.id);
+router.post("/:id/reserve", auth, admin, async (req, res) => {
+  try {
+    const event = await Event.create({
+      ...req.body,
+      availableSeats: req.body.seats
+    });
 
-  if (!event) return res.status(404).send("Event not found");
+    await client.del("events");
 
-  if (event.availableSeats <= 0) {
-    return res.status(400).send("No seats available");
+    console.log("Event created:", event._id);
+
+    res.json(event);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Error creating event");
   }
-
-  event.availableSeats -= 1;
-  await event.save();
-
-  res.json(event);
 });
 
 module.exports = router;
