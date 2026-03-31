@@ -16,23 +16,18 @@ async function sendToQueue(data) {
 router.post("/", async (req, res) => {
   const { userId, eventId } = req.body;
 
-  const event = await axios.get(
-    `http://event-service:5000/${eventId}`
-  );
+  try {
+    await axios.post(`http://event-service:5000/${eventId}/reserve`);
 
-  if (!event.data) {
-    return res.status(404).send("Event not found");
+    const booking = await Booking.create({ userId, eventId });
+
+    await sendToQueue({ userId, eventId });
+
+    res.json(booking);
+
+  } catch (err) {
+    res.status(400).send("Booking failed");
   }
-
-  const booking = await Booking.create({ userId, eventId });
-
-  await sendToQueue({
-    type: "BOOKING_CREATED",
-    userId,
-    eventId
-  });
-
-  res.json(booking);
 });
 
 module.exports = router;
