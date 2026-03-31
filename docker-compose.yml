@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3001:3001"
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "4000:4000"
+
+  event-service:
+    build: ./event-service
+    ports:
+      - "5000:5000"
+
+  booking-service:
+    build: ./booking-service
+    ports:
+      - "6000:6000"
+
+  notification-service:
+    build: ./notification-service
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
