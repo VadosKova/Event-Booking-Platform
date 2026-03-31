@@ -20,7 +20,7 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Admin Login</h2>
       <input placeholder="email" onChange={e => setEmail(e.target.value)} />
       <input placeholder="password" type="password" onChange={e => setPassword(e.target.value)} />
