@@ -10,7 +10,7 @@ router.post("/register", async (req, res) => {
     ...req.body,
     password: hashed
   });
-
+  console.log("User registered:", user._id);
   res.json(user);
 });
 
@@ -28,6 +28,7 @@ router.post("/login", async (req, res) => {
     process.env.JWT_SECRET
   );
 
+  console.log("User logged in:", user._id);
   res.json({ token });
 });
 
