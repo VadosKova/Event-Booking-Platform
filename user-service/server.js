@@ -1,0 +1,17 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+
+const authRoutes = require("./routes/auth");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("User DB connected"));
+
+app.use("/", authRoutes);
+
+app.listen(4000, () => console.log("User service running"));
