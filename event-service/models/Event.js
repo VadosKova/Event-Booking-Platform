@@ -5,4 +5,5 @@ module.exports = mongoose.model("Event", {
   description: String,
   date: Date,
   seats: Number,
+  availableSeats: Number
 });
