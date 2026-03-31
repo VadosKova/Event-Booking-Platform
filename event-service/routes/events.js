@@ -72,4 +72,19 @@ router.put("/:id", auth, admin, async (req, res) => {
   }
 });
 
+router.delete("/:id", auth, admin, async (req, res) => {
+  try {
+    await Event.findByIdAndDelete(req.params.id);
+
+    await client.del("events");
+
+    console.log("Event deleted:", req.params.id);
+
+    res.send("Deleted");
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Error deleting event");
+  }
+});
+
 module.exports = router;
