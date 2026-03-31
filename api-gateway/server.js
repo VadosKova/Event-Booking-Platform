@@ -8,6 +8,9 @@ app.use(cors());
 app.use("/auth", createProxyMiddleware({
   target: "http://user-service:4000",
   changeOrigin: true,
+  pathRewrite: {
+    "^/auth": "",
+  },
 }));
 
 app.use("/events", createProxyMiddleware({
