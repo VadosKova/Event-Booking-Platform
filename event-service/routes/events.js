@@ -31,8 +31,21 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const event = await Event.create(req.body);
-  res.json(event);
+  try {
+    const event = await Event.create({
+      ...req.body,
+      availableSeats: req.body.seats
+    });
+
+    await client.del("events");
+
+    console.log("Event created:", event._id);
+
+    res.json(event);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Error creating event");
+  }
 });
 
 router.post("/:id/reserve", async (req, res) => {
